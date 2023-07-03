@@ -27,14 +27,16 @@ app.use('/api/:website/:query/:page?', (req, res, next) => {
     let website = (req.params.website).toLowerCase();
     let query = req.params.query;
     let page = req.params.page;
-    console.log({website : website ,query : query ,page :page});
+    const q = req.query;
+    console.log({website : website ,query : query ,page :page, params: q});
     if (website === '1337x') {
         if (page > 50) {
             return res.json({
                 error: 'Please enter page  value less than 51 to get the result :)'
             })
         } else {
-            scrap1337x.torrent1337x(query, page)
+            console.log("scrapping 1337x")
+            scrap1337x.torrent1337x(query, page, q.sortby, q.sortOrder)
                 .then((data) => {
                     if (data === null) {
                         return res.json({
